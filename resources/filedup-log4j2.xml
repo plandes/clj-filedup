@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration status="off">
+    <appenders>
+        <console name="console" target="SYSTEM_OUT">
+            <patternLayout pattern="filedup: %c{1}: %m%n"/>
+        </console>
+    </appenders>
+    <loggers>
+        <root level="warn">
+            <appenderRef ref="console"/>
+        </root>
+    </loggers>
+</configuration>
