@@ -39,7 +39,7 @@
   {:description "find duplicate files"
    :options
    [(lu/log-level-set-option)
-    ["-a" "--absolute" "Print absolute path names if given"]
+    ["-a" "--absolute" "Print absolute path names if given."]
     ["-d" "--directory" "The directory to find duplicate files."
      :required "<directory>"
      :default (io/file ".")
