@@ -1,10 +1,11 @@
 (defproject com.zensols.tools/filedup "0.1.0-SNAPSHOT"
   :description "Find file dups"
   :url "https://github.com/plandes/clj-file-dups"
-  :license {:name "Apache License version 2.0"
-            :url "https://www.apache.org/licenses/LICENSE-2.0"
+  :license {:name "MIT"
+            :url "https://opensource.org/licenses/MIT"
             :distribution :repo}
-  :plugins [[lein-codox "0.10.1"]
+  :plugins [[lein-codox "0.10.3"]
+            [lein-javadoc "0.3.0"]
             [org.clojars.cvillecsteele/lein-git-version "1.2.7"]]
   :codox {:metadata {:doc/format :markdown}
           :project {:name "File dup finder"}
@@ -26,7 +27,7 @@
                  [org.apache.logging.log4j/log4j-slf4j-impl "2.7"]
 
                  ;; command line
-                 [com.zensols.tools/actioncli "0.0.15"]
+                 [com.zensols.tools/actioncli "0.0.27"]
 
                  ;; md5sum
                  [digest "1.4.5"]]
@@ -36,9 +37,10 @@
                                     ([:mainClass "zensols.filedup.core"]
                                      [:id "filedup"])]]
                                   [:environmentSetupFileName "setupenv"])}]]
-  :profiles {:uberjar {:aot [zensols.filedup.core]}
+  :profiles {:1.9 {:dependencies [[org.clojure/clojure "1.9.0"]]}
+             :uberjar {:aot [zensols.filedup.core]}
              :appassem {:aot :all}
-             :dev
-             {:jvm-opts ["-Dlog4j.configurationFile=test-resources/log4j2.xml" "-Xms4g" "-Xmx12g" "-XX:+UseConcMarkSweepGC"]
-              :dependencies [[com.zensols/clj-append "1.0.5"]]}}
+             :snapshot {:git-version {:version-cmd "echo -snapshot"}}
+             :test
+             {:jvm-opts ["-Dlog4j.configurationFile=test-resources/test-log4j2.xml" "-Xmx12g"]}}
   :main zensols.filedup.core)
