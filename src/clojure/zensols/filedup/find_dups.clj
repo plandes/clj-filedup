@@ -35,6 +35,8 @@
          doall)))
 
 (defn print-hashes
+  "Recursively print files and their respective hashes.  Start at **directory**
+  and print absolute paths if **absolute?** is non-nil."
   [directory absolute?]
   (log/infof "printing file hashes %s" directory)
   (let [path-fn (if absolute? #(.getAbsolutePath %) #(.getPath %))]
@@ -63,8 +65,8 @@
             (print-dups directory absolute)))})
 
 (def print-hash-command
-  "CLI command to find duplicate files"
-  {:description "find duplicate files"
+  "CLI command to print files and hashes"
+  {:description "print files and hashs only"
    :options ops
    :app (fn [{:keys [directory absolute] :as opts} & args]
           (with-exception
