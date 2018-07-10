@@ -34,17 +34,38 @@
                      println)))
          doall)))
 
+(defn print-hashes
+  [directory absolute?]
+  (log/infof "printing file hashes %s" directory)
+  (let [path-fn (if absolute? #(.getAbsolutePath %) #(.getPath %))]
+    (->> (file-seq (io/as-file directory))
+         (filter #(.isFile %))
+         (map (fn [file]
+                (log/infof "processing %s" file)
+                (println (str (path-fn file) ": " (d/md5 file)))))
+         doall)))
+
+(def ^:private ops
+  [(lu/log-level-set-option)
+   ["-a" "--absolute" "Print absolute path names if given."]
+   ["-d" "--directory" "The directory to find duplicate files."
+    :required "<directory>"
+    :default (io/file ".")
+    :parse-fn io/file
+    :validate [#(.isDirectory %) "Not a directory"]]])
+
 (def find-dups-command
   "CLI command to find duplicate files"
   {:description "find duplicate files"
-   :options
-   [(lu/log-level-set-option)
-    ["-a" "--absolute" "Print absolute path names if given."]
-    ["-d" "--directory" "The directory to find duplicate files."
-     :required "<directory>"
-     :default (io/file ".")
-     :parse-fn io/file
-     :validate [#(.isDirectory %) "Not a directory"]]]
+   :options ops
    :app (fn [{:keys [directory absolute] :as opts} & args]
           (with-exception
             (print-dups directory absolute)))})
+
+(def print-hash-command
+  "CLI command to find duplicate files"
+  {:description "find duplicate files"
+   :options ops
+   :app (fn [{:keys [directory absolute] :as opts} & args]
+          (with-exception
+            (print-hashes directory absolute)))})

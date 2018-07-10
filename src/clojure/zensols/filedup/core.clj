@@ -8,9 +8,11 @@
   (println (format "%s (%s)" ver/version ver/gitref)))
 
 (defn- create-action-context []
-  (cli/single-action-context
-   '(zensols.filedup.find-dups find-dups-command)
-   :version-option (cli/version-option version-info-action)))
+  (cli/multi-action-context
+   '((:dups zensols.filedup.find-dups find-dups-command)
+     (:hashes zensols.filedup.find-dups find-dups-command))
+   :version-option (cli/version-option version-info-action)
+   :default-arguments ["dups"]))
 
 (defn -main [& args]
   (lu/configure "filedup-log4j2.xml")
