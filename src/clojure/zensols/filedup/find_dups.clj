@@ -39,13 +39,14 @@
   and print absolute paths if **absolute?** is non-nil."
   [directory absolute?]
   (log/infof "printing file hashes %s" directory)
-  (let [path-fn (if absolute? #(.getAbsolutePath %) #(.getPath %))]
-    (->> (file-seq (io/as-file directory))
-         (filter #(.isFile %))
-         (map (fn [file]
-                (log/infof "processing %s" file)
-                (println (str (path-fn file) ": " (d/md5 file)))))
-         doall)))
+  (let [path-fn (if absolute? #(.getAbsolutePath %) #(.getPath %))
+        files (->> (file-seq (io/as-file directory))
+                   (filter #(.isFile %)))]
+    (log/infof "found %d files" (count files))
+    (doseq [file files]
+      (log/infof "processing %s" file)
+      (binding [*flush-on-newline* true]
+        (println (str (path-fn file) ": " (d/md5 file)))))))
 
 (def ^:private ops
   [(lu/log-level-set-option)

@@ -10,7 +10,7 @@
 (defn- create-action-context []
   (cli/multi-action-context
    '((:dups zensols.filedup.find-dups find-dups-command)
-     (:hashes zensols.filedup.find-dups find-dups-command))
+     (:hashes zensols.filedup.find-dups print-hash-command))
    :version-option (cli/version-option version-info-action)
    :default-arguments ["dups"]))
 
