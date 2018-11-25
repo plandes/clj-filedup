@@ -14,8 +14,8 @@
     <loggers>
         <logger name="zensols.filedup" level="info"/>
         <root level="warn">
-            <!--appenderRef ref="console"/-->
-            <appenderRef ref="repl"/>
+            <appenderRef ref="console"/>
+            <!--appenderRef ref="repl"/-->
         </root>
     </loggers>
 </configuration>
